@@ -75,7 +75,7 @@ Sí, es indispensable. Aunque la nueva versión cuenta con una arquitectura más
 
 ### Ticket 17640 -  Creación de atributo automatico DIA JULIANO
 
-Se puede observar que en la versión 18 se encuentra implementada la funcionalidad que permite asignar de manera automática el atributo correspondiente al día juliano.
+Se puede observar que en la versión 18 se encuentra implementada la funcionalidad que permite asignar de manera automática el atributo correspondiente al día juliano dentro de la clase **AttributeSetInstance.java**
 
 ```java
   
@@ -121,13 +121,13 @@ Este código añade una funcionalidad automática en la pantalla de creación de
 **Integración a la nueva versión**\
 Sí, es óptima, pero requiere una configuración previa. Para que esta funcionalidad opere correctamente en la nueva versión, es necesario verificar que en la base de datos de AgilERP24Q4.1 exista la columna `em_cslj_juliandate` en la tabla de atributos. En caso de que dicha columna no se encuentre creada, el sistema generará un error al intentar acceder a la pantalla correspondiente.
 
-### Ticket 23419/23419 - GLPI 2896 ERROR ENVIO DE ROLES
+### Ticket 23419/23419 - GLPI 2896 ERROR ENVIO DE ROLES(EMAIL)
 
-La versión 18 incluye un parche de seguridad orientado a forzar la conexión con servidores de correo antiguos o mal configurados. En contraste, la versión 24 utiliza un motor de correo más moderno, el cual soporta autenticación OAuth2 para servicios como Gmail y Outlook, y realiza el envío de correos en segundo plano, evitando bloqueos en la interfaz del usuario. Por lo tanto, se recomienda mantener la implementación de la versión 24, ya que ofrece un mayor nivel de seguridad, mejor compatibilidad y una arquitectura más actualizada.
+La versión 18 incluye un parche de seguridad orientado a forzar la conexión con servidores de correo antiguos o mal configurados. En contraste, la versión 24 utiliza un motor de correo más moderno, el cual soporta autenticación OAuth2 para servicios como Gmail y Outlook, y realiza el envío de correos en segundo plano, evitando bloqueos en la interfaz del usuario. Por lo tanto, se recomienda mantener la implementación de la versión 24, ya que ofrece un mayor nivel de seguridad, mejor compatibilidad y una arquitectura más actualizada. Todo esto dentro la clase **EmailManager.java**
 
 ### Ticket 1860  - "DESARROLLO - QUITAR ENCABEZADO DE NORMA ISO EN REPORTES"
 
-Dentro de este ticket se identificó el siguiente código, cuya función es solicitar al sistema que envíe al reporte la información del usuario que ha ejecutado la acción al hacer clic en el botón de **“Imprimir”**, permitiendo así registrar y mostrar los datos de la persona que generó el documento.
+Dentro de este ticket se identificó el siguiente código, cuya función es solicitar al sistema que envíe al reporte la información del usuario que ha ejecutado la acción al hacer clic en el botón de **“Imprimir”**, permitiendo así registrar y mostrar los datos de la persona que generó el documento. Y se encuentra dentro de **ReportInvoiceVendorJR.jrxml**
 
 ```
 <parameter name="User_ID" class="java.lang.String" isForPrompting="false">
@@ -148,13 +148,15 @@ Esto permite que el área de compras trabaje con términos familiares y que los 
 
 ### **Ticket 4042 - "DESA\_4042\_ERROR EN CARGA DE REPORTES UNNO**
 
-En este caso se decidió mantener la versión v24, ya que corresponde a una actualización técnica necesaria. La versión 18 utiliza instrucciones de diseño obsoletas que no son compatibles con el motor de impresión actual, lo que podría provocar que los nombres de los productos se muestren incompletos o que el reporte genere errores al momento de su ejecución. La versión v24, en cambio, ya incorpora el lenguaje y las correcciones requeridas por el nuevo motor de impresión, lo que la hace más estable, segura y adecuada para el entorno AgilERP24Q4.1.
+En este caso se decidió mantener la versión v24, ya que corresponde a una actualización técnica necesaria. La versión 18 utiliza instrucciones de diseño obsoletas que no son compatibles con el motor de impresión actual, lo que podría provocar que los nombres de los productos se muestren incompletos o que el reporte genere errores al momento de su ejecución. La versión v24, en cambio, ya incorpora el lenguaje y las correcciones requeridas por el nuevo motor de impresión, lo que la hace más estable, segura y adecuada para el entorno AgilERP24Q4.1. Todo esto obtenido del archivo **ReportWarehousePartnerJR.jrxml**
 
 
 
 ### Ticket  7763 - Reporte de transferencias internas
 
 Se identificó esta diferencia en la versión 18. Este fragmento de código habilita la función `submitCommandForm('EXCEL', ...)`, la cual permite la exportación de los movimientos de inventario. En ausencia de este bloque dentro del archivo `.html`, el usuario únicamente puede visualizar la información en la interfaz web (HTML). Al incorporarlo, se restablece la posibilidad para las áreas de contabilidad o bodega de descargar los movimientos en formato Excel, facilitando la realización de cruces de información, filtros manuales y la generación de reportes rápidos.
+
+Todo esto encontrado en **ReportGeneralLedgerExcel.jrxml** el cual genera es el encargado de dar formato, el cual se ejecuta desde el boton que se encuentra en **ReportProductMovement.html** la cual realiza desde la clase **ReportProductMovement.java**
 
 ```
               <td class="Button_LeftAlign_ContentCell" colspan="0">
@@ -192,7 +194,7 @@ Su implementación representa una propuesta adecuada, debido a que permite al re
 
 ### Ticket 2804 - "ACTIVOS - DESARROLLO - REFERENCIA EN LIBRO MAYOR Y EXCEL"
 
-Se identificaron dos variaciones en la versión 18.
+Se identificaron dos variaciones en la versión 18 dentro de **ReportGeneralLedgerExcel.jrxml**
 
 ```
 <staticText>
@@ -241,7 +243,7 @@ Este código obtiene el campo Documento desde la base de datos y lo presenta en 
 
 ### Ticket 18115 - DESARROLLO DIARIO CONTABLE DE VACACIONES
 
-Dentro del desarrollo se identifica una personalización en la versión 18, mientras que la versión 24 presenta una implementación más genérica y con menor nivel de detalle. Por este motivo, resulta viable adaptar dicha personalización a la versión 24 para mantener el comportamiento funcional esperado.
+Dentro del desarrollo se identifica una personalización en la versión 18, mientras que la versión 24 presenta una implementación más genérica y con menor nivel de detalle. Por este motivo, resulta viable adaptar dicha personalización a la versión 24 para mantener el comportamiento funcional esperado. Todo esto dentro de **ReportGeneralLedgerJournal.jrxml**
 
 ```
 <image ...>
@@ -278,7 +280,7 @@ Si es óptimo integrar los elementos funcionales de la versión 18 en la versió
 
 ### Ticket 1074 - "Mejoras al reporte de Antiguedad de Cartera Cobro y Pagos"
 
-Este reporte clasifica las deudas de clientes o proveedores por rangos de antigüedad, por ejemplo de 1 a 30 días, de 31 a 60 días, entre otros..
+Este reporte clasifica las deudas de clientes o proveedores por rangos de antigüedad, por ejemplo de 1 a 30 días, de 31 a 60 días, entre otros, lo encontramos dentro de **AgingScheduleDetailHTML.jrxml**
 
 * La v18  está diseñada para que el departamento de cobranzas  pueda ver de un vistazo qué facturas están próximas a vencer y cuáles ya están morosas, identificando al cliente por su RUC.
 * En cambio, la versión 24 corresponde al formato base de Openbravo, el cual es funcional, pero resulta menos intuitivo para usuarios de habla hispana y para la generación de reportes con fines legales.
@@ -867,7 +869,7 @@ Sí, es altamente recomendable, aunque con una consideración técnica. Se debe 
 
 ### Ticket 10095 - BUG - NOMBRES EN REPORTE DE ANTIGUEDAD DE COBROS - PAGOS - GLPI 5107
 
-Este reporte proporciona al área financiera un resumen ejecutivo de los saldos adeudados, indicando quién mantiene la deuda y el estado en el que se encuentra, sin detallar factura por factura, ya que dicho nivel de información es cubierto por el reporte anterior.
+Este reporte proporciona al área financiera un resumen ejecutivo de los saldos adeudados, indicando quién mantiene la deuda y el estado en el que se encuentra, sin detallar factura por factura, ya que dicho nivel de información es cubierto por el reporte anterior. Encontrado en  **AgingSchedulePDF.jrxml**
 
 Se identificaron las siguientes diferencias:
 
@@ -1135,7 +1137,7 @@ En consecuencia, se identificaron las siguientes diferencias:
 
 ### Ticket 3428 - "3428 DESARROLLO - Corrección formato salida Antiguedad de cartera"
 
-&#x20;En la versión 18, Sidesoft redefine las rutas de los archivos de exportación a Excel para utilizar versiones personalizadas que soportan un mayor número de columnas y etiquetas en idioma español.
+&#x20;En la versión 18, Sidesoft redefine las rutas de los archivos de exportación a Excel para utilizar versiones personalizadas que soportan un mayor número de columnas y etiquetas en idioma español. Todo esto dentro de **AgingBalanceReportActionHandler.java**
 
 Ubicación de las rutas:
 
@@ -1154,7 +1156,7 @@ parameters.put("inpLabel1", "1-" + strColumn1);
         parameters.put("inpLabel2", (Integer.valueOf(strColumn1) + 1) + "-" + strColumn2);
         parameters.put("inpLabel3", (Integer.valueOf(strColumn2) + 1) + "-" + strColumn3);
         parameters.put("inpLabel4", (Integer.valueOf(strColumn3) + 1) + "-" + strColumn4);
-        parameters.put("inpLabel5", "Sobre " + strColumn4); // <-- Aquí dice "Sobre" en lugar de "Over"
+        parameters.put("inpLabel5", "Sobre " + strColumn4);
 ```
 
 Finalmente, se incorpora la definición de títulos dinámicos, los cuales se generan en función de los filtros y parámetros seleccionados, permitiendo que cada reporte refleje de forma precisa el contexto de la información presentada.
@@ -1176,7 +1178,7 @@ Todo lo anterior evita que el reporte en formato Excel presente errores de forma
 
 
 
-_**En conclusión, el análisis demuestra que la versión 24 debe utilizarse como base, ya que cuenta con una arquitectura más actual, mayor compatibilidad con los motores modernos y una mejor estabilidad general. No obstante, la versión 18 incorpora varias personalizaciones y reglas de negocio que han demostrado ser útiles en la operación diaria, especialmente en los procesos contables, logísticos y de cobranzas, así como en la generación de reportes adaptados a la realidad del negocio en Ecuador. Por este motivo, la mejor alternativa es integrar de forma selectiva aquellas funcionalidades de la versión 18 que realmente aportan valor, adaptándolas al código y estándares de la versión 24, de manera que se mantenga la facilidad de uso, la trazabilidad y la identidad visual del sistema, sin afectar la seguridad, el rendimiento ni la estabilidad del entorno AgilERP24Q4.1.**_
+_**En conclusión, todos los cambios mencionados se encuentran en al V18, es decir, todo el codigo que se encuentra en este documento es parte de la v18, el análisis demuestra que la versión 24 debe utilizarse como base, ya que cuenta con una arquitectura más actual, mayor compatibilidad con los motores modernos y una mejor estabilidad general. No obstante, la versión 18 incorpora varias personalizaciones y reglas de negocio que han demostrado ser útiles en la operación diaria, especialmente en los procesos contables, logísticos y de cobranzas, así como en la generación de reportes adaptados a la realidad del negocio en Ecuador. Por este motivo, la mejor alternativa es integrar de forma selectiva aquellas funcionalidades de la versión 18 que realmente aportan valor, adaptándolas al código y estándares de la versión 24, de manera que se mantenga la facilidad de uso, la trazabilidad y la identidad visual del sistema, sin afectar la seguridad, el rendimiento ni la estabilidad del entorno AgilERP24Q4.1.**_
 
 
 
